@@ -34,11 +34,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kim05\\OneDrive\\桌面\\WebAPI\\Core6\\WebAPI\\BLLLib\\BLLLib.csproj",
+      "projectUniqueName": "C:\\Users\\kim05\\OneDrive\\桌面\\Code\\WebAPI\\Core6\\BLLLib\\BLLLib.csproj",
       "projectName": "BLLLib",
-      "projectPath": "C:\\Users\\kim05\\OneDrive\\桌面\\WebAPI\\Core6\\WebAPI\\BLLLib\\BLLLib.csproj",
+      "projectPath": "C:\\Users\\kim05\\OneDrive\\桌面\\Code\\WebAPI\\Core6\\BLLLib\\BLLLib.csproj",
       "packagesPath": "C:\\Users\\kim05\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kim05\\OneDrive\\桌面\\WebAPI\\Core6\\WebAPI\\BLLLib\\obj\\",
+      "outputPath": "C:\\Users\\kim05\\OneDrive\\桌面\\Code\\WebAPI\\Core6\\BLLLib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -61,8 +61,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\kim05\\OneDrive\\桌面\\WebAPI\\Core6\\WebAPI\\SharedSettingsLib\\SharedSettingsLib.csproj": {
-              "projectPath": "C:\\Users\\kim05\\OneDrive\\桌面\\WebAPI\\Core6\\WebAPI\\SharedSettingsLib\\SharedSettingsLib.csproj"
+            "C:\\Users\\kim05\\OneDrive\\桌面\\Code\\WebAPI\\Core6\\SharedSettingsLib\\SharedSettingsLib.csproj": {
+              "projectPath": "C:\\Users\\kim05\\OneDrive\\桌面\\Code\\WebAPI\\Core6\\SharedSettingsLib\\SharedSettingsLib.csproj"
             }
           }
         }
