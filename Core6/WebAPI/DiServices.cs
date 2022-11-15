@@ -6,10 +6,10 @@ namespace WebAPI
   public class DiServices
   {
     //public static void RegisterTypes(WebApplicationBuilder bu, IConfigurationRoot? appsettings)
-    public static void RegisterTypes(WebApplicationBuilder bu)
+    public static void RegisterTypes(WebApplicationBuilder bu, IConfigurationRoot? appsettings)
     {
       //連線字串
-      //var connectionString = SWIP_SharedSettingsLib.AppSettings.DefaultConnectionString(appsettings);
+      var connectionString = SharedSettingsLib.AppSettings.DefaultConnectionString(appsettings);
       var se = bu.Services;
 
       //EntityDBContext

@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
     public IEnumerable<string> Get()
     {
       var getResult = _testDIService.GetResult();
-      return new string[] { getResult, "value2" };
+      return new string[] { getResult };
     }
   }
 }
