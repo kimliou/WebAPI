@@ -18,6 +18,10 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+var AppSettings = app.Services.GetService<SharedSettingsLib.AppSettings>();
+AppSettings!.appsettings = appsettings;
+//AppSettings!.InitDefaultSettings(); 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

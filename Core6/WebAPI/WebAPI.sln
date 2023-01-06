@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI.csproj", "{3100373B-BB4E-40AA-A67B-D6F5934D9DD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI.csproj", "{3100373B-BB4E-40AA-A67B-D6F5934D9DD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSettingsLib", "..\SharedSettingsLib\SharedSettingsLib.csproj", "{D4690561-AD3E-4CB6-91CA-F9F4F5806E1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSettingsLib", "..\SharedSettingsLib\SharedSettingsLib.csproj", "{D4690561-AD3E-4CB6-91CA-F9F4F5806E1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLLLib", "..\BLLLib\BLLLib.csproj", "{E9B5657B-B81E-4CC5-85CF-51F03043C098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLLLib", "..\BLLLib\BLLLib.csproj", "{E9B5657B-B81E-4CC5-85CF-51F03043C098}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBLib", "..\DBLib\DBLib.csproj", "{EDB8BBF5-E791-4B8D-A27B-0CE364DBDBD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{E9B5657B-B81E-4CC5-85CF-51F03043C098}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9B5657B-B81E-4CC5-85CF-51F03043C098}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9B5657B-B81E-4CC5-85CF-51F03043C098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB8BBF5-E791-4B8D-A27B-0CE364DBDBD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB8BBF5-E791-4B8D-A27B-0CE364DBDBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB8BBF5-E791-4B8D-A27B-0CE364DBDBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB8BBF5-E791-4B8D-A27B-0CE364DBDBD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
