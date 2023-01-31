@@ -36,6 +36,9 @@ namespace SharedSettingsLib.Extensions
       return result;
     }
 
-
+    public static int? ToInt16(this string? value)
+    {
+      return string.IsNullOrEmpty(value) ? null : Convert.ToInt16(value);
+    }
   }
 }
