@@ -12,7 +12,7 @@ namespace DBLib.BlogDB
 {
   public interface IBlogDB_Table
   {
-    public BlogResult Create(BlogResult input);
+    public BlogResult Create(BlogResult input, bool throwException = false);
     public List<BlogResult> Read(BlogQuery input);
   }
   public class Blog_Table : IBlogDB_Table
@@ -23,9 +23,11 @@ namespace DBLib.BlogDB
     }
     public SqlConnection? SqlConnection { get; }
 
-    public BlogResult Create(BlogResult input)
+    public BlogResult Create(BlogResult input , bool throwException = false)
     {
-      var sqlStr = @"
+      try
+      {
+        var sqlStr = @"
 INSERT INTO [dbo].[Blog]
            ([BlogId]
            ,[Url]
@@ -35,17 +37,29 @@ INSERT INTO [dbo].[Blog]
            ,@Url
            ,@Rating)
 ";
-      return SqlConnection.QueryFirstOrDefault<BlogResult>(sqlStr,input);
+        return SqlConnection.QueryFirstOrDefault<BlogResult>(sqlStr, input);
+      }
+      catch (Exception)
+      {
+        throw;
+      }
+      
     }
     public List<BlogResult> Read(BlogQuery input)
     {
-      //建議把所有欄位打出來，原因是效能問題
-      var sqlStr = @"SELECT [BlogId]
+      try
+      {
+        var sqlStr = @"SELECT [BlogId]
       ,[Url]
       ,[Rating]
   FROM [dbo].[Blog] ";
       sqlStr += ObjectExtension.GenerateSqlWhere(input);
       return SqlConnection.Query<BlogResult>(sqlStr,input).ToList();
+      }
+      catch (Exception)
+      {
+        throw;
+      }
     }
   }
 }

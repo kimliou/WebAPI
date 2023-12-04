@@ -15,9 +15,9 @@ namespace WebAPI.Controllers
     }
     private IBlogServices _blogServices { get; }
     [HttpPost]
-    public BlogResult Create(BlogResult inpur)
+    public BlogResult Create(BlogResult input)
     {
-      return _blogServices.Create(inpur);
+      return _blogServices.Create(input);
     }
   }
 }

@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
   [ApiController]
+  //[AllowAnonymous]
   [Route("[controller]")]
   public class WeatherForecastController : ControllerBase
   {
@@ -17,7 +19,7 @@ namespace WebAPI.Controllers
     {
       _logger = logger;
     }
-
+    
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
