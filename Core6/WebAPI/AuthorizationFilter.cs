@@ -5,16 +5,22 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Primitives;
 using SharedSettingsLib.Extensions;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using WebAPI.JWT;
 
 namespace WebAPI
 {
   public class AuthorizationFilter : IAuthorizationFilter
   {
-    public AuthorizationFilter()
+    public AuthorizationFilter(JwtHelpers jwtHelpers,
+        Serilog.ILogger serilog)
     {
-
+      JwtHelpers = jwtHelpers;
+      Log = serilog;
     }
+    public JwtHelpers JwtHelpers { get; }
+    public Serilog.ILogger Log { get; }
     private StringValues TokenString = "";
     private StringValues UrlRouting = "";
     private string UserID = "";
@@ -32,8 +38,7 @@ namespace WebAPI
       var isPermitted = false;
       var hasAuthTokenString = context.HttpContext.Request.Headers.TryGetValue("authorization", out TokenString);
       //var hasUrlRouting = context.HttpContext.Request.Headers.TryGetValue("urlrouting", out UrlRouting);
-      //if (hasAuthTokenString && VerifyToken())
-      if (hasAuthTokenString)
+      if (hasAuthTokenString && VerifyToken())
       {
         context.HttpContext.Request.Headers.Add("userid", UserID); //把  VerifyToken 解出來的 UserID 新增至 Header userid _
         Log.Information($"<{action}> {nameof(TokenString)}: {TokenString.ToString().Replace("Bearer ", "")}");
@@ -95,33 +100,31 @@ namespace WebAPI
       }
       return false;
     }
-    #region Token
-    //private bool VerifyToken()
-    //{
-    //  var methodInfo = MethodBase.GetCurrentMethod().GetMethodInfo();
-    //  if (string.IsNullOrEmpty(TokenString))
-    //  {
-    //    Log.Warning($"<{action}> TokenString IsNullOrEmpty");
-    //    return false;
-    //  }
-    //  try
-    //  {
-    //    JwtSecurityToken? jwtSecurityToken = JwtHelpers.VerifyToken(JwtHelpers.TrimAsTokenString(TokenString));
-    //    if (jwtSecurityToken != null)
-    //    {
-    //      UserID = JwtHelpers!.GetTokenClaimsSubject(jwtSecurityToken) ?? "";
-    //      Log.Information($"<{action}> {nameof(UserID)}: `{UserID}` token not null, verify success");
-    //      return true;
-    //    }
-    //  }
-    //  catch (Exception ex)
-    //  {
-    //    ex.LogError(methodInfo);
-    //  }
-    //  Log.Warning($"<{action}> token is null, {nameof(TokenString)}: `{TokenString}`");
-    //  return false;
-    //}
-    #endregion
+    private bool VerifyToken()
+    {
+      var methodInfo = MethodBase.GetCurrentMethod().GetMethodInfo();
+      if (string.IsNullOrEmpty(TokenString))
+      {
+        Log.Warning($"<{action}> TokenString IsNullOrEmpty");
+        return false;
+      }
+      try
+      {
+        JwtSecurityToken? jwtSecurityToken = JwtHelpers.VerifyToken(JwtHelpers.TrimAsTokenString(TokenString!));
+        if (jwtSecurityToken != null)
+        {
+          UserID = JwtHelpers!.GetTokenClaimsSubject(jwtSecurityToken) ?? "";
+          Log.Information($"<{action}> {nameof(UserID)}: `{UserID}` token not null, verify success");
+          return true;
+        }
+      }
+      catch (Exception ex)
+      {
+        ex.LogError(methodInfo);
+      }
+      Log.Warning($"<{action}> token is null, {nameof(TokenString)}: `{TokenString}`");
+      return false;
+    }
     private bool IsAllowAnyUrlRouting(AuthorizationFilterContext context)
     {
       var result = false;

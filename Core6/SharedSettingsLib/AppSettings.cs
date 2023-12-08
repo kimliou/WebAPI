@@ -33,6 +33,12 @@ namespace SharedSettingsLib
       var Decrypt = CryptographyContext.Decrypt(value);
       return string.IsNullOrEmpty(Decrypt) ? value : Decrypt;
     }
+    public static string JwtSettingsIssuer(IConfigurationRoot? appsettings)
+    {
+      var value = appsettings.GetValue<string>($"{JwtSettings}:{Issuer}");
+      var Decrypt = CryptographyContext.Decrypt(value, SecretSignKey(appsettings));
+      return string.IsNullOrEmpty(Decrypt) ? value : Decrypt;
+    }
     public string GetSecretSignKey()
     {
       return JwtSettingsSignKey(appsettings);
@@ -40,6 +46,21 @@ namespace SharedSettingsLib
     public static string SecretSignKey(IConfigurationRoot? appsettings)
     {
       return JwtSettingsSignKey(appsettings);
+    }
+    public string GetJwtSettingsIssuer()
+    {
+      return JwtSettingsIssuer(appsettings);
+    }
+
+    public string GetJwtSettingsSignKey()
+    {
+      return JwtSettingsSignKey(appsettings);
+    }
+    public static string ExpireMinutes => nameof(ExpireMinutes);
+    public int GetJwtExpireMinutes()
+    {
+      int result = appsettings?.GetValue<int>($"{JwtSettings}:{ExpireMinutes}") ?? 30;
+      return (result > 0) ? result : 30;
     }
     #endregion
     #region DBConnection
