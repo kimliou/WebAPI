@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using SharedSettingsLib.Attributes;
 using System.Data.SqlClient;
@@ -19,17 +20,17 @@ namespace WebAPI
       var jwtSettingsIssuer = SharedSettingsLib.AppSettings.JwtSettingsIssuer(appsettings);
       var se = bu.Services;
       se.AddSingleton<Serilog.ILogger>(Log.Logger);
-      ////EntityDBContext 
-      //      se.AddDbContext<SWIP_CTBCSB_AP_DbLib.EF_CTBCSB_AP.CTBCSBAPContext>(dbContextOptionsBuilder =>
-      //      {
-      //        dbContextOptionsBuilder.UseSqlServer(connectionString); // get connectionString settings from appsettings.json _
-      //                                                                // dbContextOptionsBuilder.UseSqlServer(connectionString, options => options.EnableRetryOnFailure());//EnableRetryOnFailure 自動重試失敗的資料庫命令 
-      //        dbContextOptionsBuilder.ConfigureWarnings(warnings =>
-      //          warnings.Ignore(SqlServerEventId.DecimalTypeKeyWarning)
-      //        // 忽略程式啟動時的 Entity Framework 警告 warn: Microsoft.EntityFrameworkCore.Model.Validation[30003] The decimal property 'SEQ_NO' is part of a key on entity type 'SYS_CD' ...
-      //        );
-      //      },
-      //ServiceLifetime.Transient, ServiceLifetime.Singleton);
+      //EntityDBContext 
+      se.AddDbContext<DBLib.EF_BlogDB.BlogDBContext>(dbContextOptionsBuilder =>
+        {
+           dbContextOptionsBuilder.UseSqlServer(connectionString); // get connectionString settings from appsettings.json _
+                                                                   // dbContextOptionsBuilder.UseSqlServer(connectionString, options => options.EnableRetryOnFailure());//EnableRetryOnFailure 自動重試失敗的資料庫命令 
+           dbContextOptionsBuilder.ConfigureWarnings(warnings =>
+            warnings.Ignore(SqlServerEventId.DecimalTypeKeyWarning)
+            // 忽略程式啟動時的 Entity Framework 警告 warn: Microsoft.EntityFrameworkCore.Model.Validation[30003] The decimal property 'SEQ_NO' is part of a key on entity type 'SYS_CD' ...
+            );
+        },
+      ServiceLifetime.Transient, ServiceLifetime.Singleton);
 
       se.AddHttpClient();
       #region ` JWT `
