@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedSettingsLib.Models.Login;
+using WebAPI.JWT;
 
 namespace WebAPI.Controllers.Login
 {
@@ -10,16 +11,23 @@ namespace WebAPI.Controllers.Login
   [ApiController]
   public class LoginController : ControllerBase
   {
-    public LoginController(ILoginService loginService)
+    public LoginController(ILoginService loginService, JwtHelpers jwt)
     {
       LoginService = loginService;
+      Jwt = jwt;
     }
     public ILoginService LoginService { get; }
+    public JwtHelpers Jwt { get; }
     [AllowAnonymous]
     [HttpPost]
     public ActionResult<LoginResult> Login(LoginQuery login)
     {
-      return LoginService.GetLoginResult(login.UserID!);
+      Console.WriteLine(Jwt.GenerateToken(login.UserID!));
+      var loginResult = LoginService.GetLoginResult(login);
+      loginResult.TokenString = Jwt.GenerateToken(login.UserID!); // 產生 token 回傳
+      loginResult.Success = true;
+
+      return loginResult;
     }
   }
 }

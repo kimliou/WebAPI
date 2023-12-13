@@ -2,6 +2,7 @@
 using SharedSettingsLib.Attributes;
 using SharedSettingsLib.Models.DB;
 using SharedSettingsLib.Models.Login;
+using SharedSettingsLib.Secrets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace BLLLib.Services.Login
 {
   public interface ILoginService
   {
-    LoginResult GetLoginResult(string userID);
+    LoginResult GetLoginResult(LoginQuery login);
   }
   [InjectScoped]
   public class LoginService : ILoginService
@@ -26,12 +27,13 @@ namespace BLLLib.Services.Login
     }
     public BlogDBContext DBContext { get; }
     public Serilog.ILogger Log { get; }
-    public LoginResult GetLoginResult(string userID)
+    public LoginResult GetLoginResult(LoginQuery login)
     {
       var result = new LoginResult();
       try
       {
-        var userData = DBContext.Users.Where(u => u.UserID == userID).ToList();
+        var encryptPassword = CryptographyContext.Encrypt(login.PassWord!);
+        var userData = DBContext.Users.Where(u => u.UserID == login.UserID && u.Password == encryptPassword).ToList();
         if (userData.Count != 1)
         {
           throw new Exception("user資料異常");
@@ -46,11 +48,10 @@ namespace BLLLib.Services.Login
           UserMobile = userData.FirstOrDefault()!.UserMobile,
           UserName = userData.FirstOrDefault()!.UserName
         };
-
       }
       catch (Exception ex)
       {
-        var methodInfo = $"{MethodInfo.GetCurrentMethod()?.ReflectedType?.Namespace}.{MethodInfo.GetCurrentMethod()?.ReflectedType?.Name}.{MethodInfo.GetCurrentMethod()?.Name}()";
+        var methodInfo = $"{MethodBase.GetCurrentMethod()?.ReflectedType?.Namespace}.{MethodBase.GetCurrentMethod()?.ReflectedType?.Name}.{MethodBase.GetCurrentMethod()?.Name}()";
         Log.Error(ex, $"{methodInfo}: {ex.GetType().Name}: {ex.Message}");
         throw;
       }

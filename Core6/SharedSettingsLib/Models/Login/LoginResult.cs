@@ -11,7 +11,6 @@ namespace SharedSettingsLib.Models.Login
   public class LoginResult
   {
     public bool? Success { get; set; }
-    public string? Message { get; set; }
 
     public string? TokenString { get; set; }
     public UsersResult? UserData { get; set; }

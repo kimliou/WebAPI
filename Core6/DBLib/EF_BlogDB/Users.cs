@@ -7,6 +7,8 @@ public partial class Users
 {
     public string UserID { get; set; } = null!;
 
+    public string Password { get; set; } = null!;
+
     public string? UserName { get; set; }
 
     public string? UserMobile { get; set; }

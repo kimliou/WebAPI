@@ -24,7 +24,7 @@ namespace WebAPI
     private StringValues TokenString = "";
     private StringValues UrlRouting = "";
     private string UserID = "";
-    private string action = "";
+    private string Action = "";
     public void OnAuthorization(AuthorizationFilterContext context)
     {
       if (context == null)
@@ -37,16 +37,16 @@ namespace WebAPI
       }
       var isPermitted = false;
       var hasAuthTokenString = context.HttpContext.Request.Headers.TryGetValue("authorization", out TokenString);
-      //var hasUrlRouting = context.HttpContext.Request.Headers.TryGetValue("urlrouting", out UrlRouting);
+      var hasUrlRouting = context.HttpContext.Request.Headers.TryGetValue("urlrouting", out UrlRouting);
       if (hasAuthTokenString && VerifyToken())
       {
         context.HttpContext.Request.Headers.Add("userid", UserID); //把  VerifyToken 解出來的 UserID 新增至 Header userid _
-        Log.Information($"<{action}> {nameof(TokenString)}: {TokenString.ToString().Replace("Bearer ", "")}");
-        Log.Information($"<{action}> {nameof(UrlRouting)}: {UrlRouting}");
+        Log.Information($"<{Action}> {nameof(TokenString)}: {TokenString.ToString().Replace("Bearer ", "")}");
+        Log.Information($"<{Action}> {nameof(UrlRouting)}: {UrlRouting}");
         if (IsAllowAnyUrlRouting(context)) // 有一些不需要驗證 UrlRouting 的頁面，例如登入頁面
         {
           isPermitted = true;
-          Log.Information($"<{action}> [{nameof(IsAllowAnyUrlRouting)}] token verified");
+          Log.Information($"<{Action}> [{nameof(IsAllowAnyUrlRouting)}] token verified");
         }
         //看是否需要驗證Route
         //else if (hasUrlRouting && VerifyRouting())
@@ -54,16 +54,16 @@ namespace WebAPI
         //  Log.Information($"<{action}> routing verified");
         //  isPermitted = true;
         //}
-        //if (!hasUrlRouting) { isPermitted = true; } //如果沒有 UrlRouting, 就略過 VerifyRouting false => for Swagger 
+        if (!hasUrlRouting) { isPermitted = true; } //如果沒有 UrlRouting, 就略過 VerifyRouting false => for Swagger 
       }
       if (isPermitted)
       {
-        Log.Information($"<{action}> {nameof(isPermitted)}: {isPermitted}");
+        Log.Information($"<{Action}> {nameof(isPermitted)}: {isPermitted}");
         return;
       }
       else
       {
-        Log.Information($"<{action}> [403] {nameof(ForbidResult)}: {nameof(isPermitted)}: {isPermitted}");
+        Log.Information($"<{Action}> [403] {nameof(ForbidResult)}: {nameof(isPermitted)}: {isPermitted}");
         context.Result = new ForbidResult();
       }
     }
@@ -105,7 +105,7 @@ namespace WebAPI
       var methodInfo = MethodBase.GetCurrentMethod().GetMethodInfo();
       if (string.IsNullOrEmpty(TokenString))
       {
-        Log.Warning($"<{action}> TokenString IsNullOrEmpty");
+        Log.Warning($"<{Action}> TokenString IsNullOrEmpty");
         return false;
       }
       try
@@ -114,7 +114,7 @@ namespace WebAPI
         if (jwtSecurityToken != null)
         {
           UserID = JwtHelpers!.GetTokenClaimsSubject(jwtSecurityToken) ?? "";
-          Log.Information($"<{action}> {nameof(UserID)}: `{UserID}` token not null, verify success");
+          Log.Information($"<{Action}> {nameof(UserID)}: `{UserID}` token not null, verify success");
           return true;
         }
       }
@@ -122,7 +122,7 @@ namespace WebAPI
       {
         ex.LogError(methodInfo);
       }
-      Log.Warning($"<{action}> token is null, {nameof(TokenString)}: `{TokenString}`");
+      Log.Warning($"<{Action}> token is null, {nameof(TokenString)}: `{TokenString}`");
       return false;
     }
     private bool IsAllowAnyUrlRouting(AuthorizationFilterContext context)
@@ -137,13 +137,13 @@ namespace WebAPI
         var allowAnyUrlRouting = (SharedSettingsLib.Attributes.AllowAnyUrlRouting[])controllerTypeInfo.GetCustomAttributes(typeof(SharedSettingsLib.Attributes.AllowAnyUrlRouting), true);
         if (allowAnyUrlRouting != null && allowAnyUrlRouting.Length > 0)
         {
-          Log.Information($"<{action}> controller [AllowAnyUrlRouting]");
+          Log.Information($"<{Action}> controller [AllowAnyUrlRouting]");
           return true;
         }
         allowAnyUrlRouting = (SharedSettingsLib.Attributes.AllowAnyUrlRouting[])actionMethodInfo.GetCustomAttributes(typeof(SharedSettingsLib.Attributes.AllowAnyUrlRouting), true);
         if (allowAnyUrlRouting != null && allowAnyUrlRouting.Length > 0)
         {
-          Log.Information($"<{action}> action [AllowAnyUrlRouting]");
+          Log.Information($"<{Action}> action [AllowAnyUrlRouting]");
           return true;
         }
       }
