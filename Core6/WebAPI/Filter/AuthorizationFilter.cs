@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using WebAPI.JWT;
 
-namespace WebAPI
+namespace WebAPI.Filter
 {
   public class AuthorizationFilter : IAuthorizationFilter
   {

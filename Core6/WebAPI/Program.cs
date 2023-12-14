@@ -28,8 +28,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMvc(options =>
 {
-  options.Filters.Add(typeof(WebAPI.AuthorizationFilter));
-  //options.Filters.Add(typeof(SWIP_WebApi.ExceptionHandledActionFilter));  
+  options.Filters.Add(typeof(WebAPI.Filter.AuthorizationFilter));
+  options.Filters.Add(typeof(WebAPI.Filter.ExceptionHandledActionFilter));  
 });
 
 //.AddJsonOptions(options =>
